@@ -1,0 +1,16 @@
+package com.sample
+
+unit PromotionUnit;
+
+import com.sample.PromotionApplication;
+import com.sample.LineItem;
+
+rule "Insert Cart"
+	salience 1000
+	when
+		/promotionApplications[$cart : cart]
+	then
+		for (Object item : $cart) {
+			insert(item);
+		}
+end
