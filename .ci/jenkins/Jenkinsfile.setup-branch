@@ -92,6 +92,17 @@ pipeline {
             steps {
                 script {
                     dir(getRepoName()) {
+
+                        try {
+                            def pom = readMavenPom(file: 'pom.xml')
+                            echo "POM Object: ${pom}"
+                            echo "POM Version: ${pom.version}"
+                        } catch (Exception e) {
+                            echo "Exception occurred: ${e}"
+                            e.printStackTrace()
+                        }
+
+
                         def oldKogitoVersion = readMavenPom(file: 'pom.xml').version
                         echo "Got old Kogito version ${oldKogitoVersion}"
 //                        configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
