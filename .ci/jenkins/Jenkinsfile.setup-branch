@@ -95,8 +95,15 @@ pipeline {
 
                         try {
                             def pom = readMavenPom(file: 'pom.xml')
+                            echo "POM Details: ${pom.dump()}"
+
                             echo "POM Object: ${pom}"
                             echo "POM Version: ${pom.version}"
+
+                            if (pom.version == null) {
+                                def parentPom = readMavenPom(file: "${pom.parent.relativePath ?: '../pom.xml'}")
+                                echo "Parent POM Version: ${parentPom.version}"
+                            }
                         } catch (Exception e) {
                             echo "Exception occurred: ${e}"
                             e.printStackTrace()
