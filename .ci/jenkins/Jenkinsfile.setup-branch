@@ -31,7 +31,7 @@ pipeline {
                 script {
                     cleanWs(disableDeferredWipeout: true)
 
-                    checkout scm
+//                    checkout scm
 
 //                    examplesHelper = load '.ci/jenkins/helper_scripts/examples.groovy'
 //
@@ -42,7 +42,7 @@ pipeline {
 //                    checkoutRepo(droolsRepo, getBuildBranch())
 //                    checkoutRepo(kogitoRuntimesRepo, getBuildBranch())
 //                    checkoutRepo(kogitoAppsRepo, getBuildBranch())
-//                    checkoutRepo(getRepoName(), getBuildBranch())
+                    checkoutRepo(getRepoName(), getBuildBranch())
                 }
             }
         }
