@@ -1,30 +1,20 @@
 import org.jenkinsci.plugins.workflow.libs.Library
-@Library('jenkins-pipeline-shared-libraries')_
+//@Library('jenkins-pipeline-shared-libraries')_
 
 import org.kie.jenkins.MavenCommand
 
 examplesHelper = null
 
-droolsRepo = 'incubator-kie-drools'
-kogitoRuntimesRepo = 'incubator-kie-kogito-runtimes'
-kogitoAppsRepo = 'incubator-kie-kogito-apps'
+//droolsRepo = 'incubator-kie-drools'
+//kogitoRuntimesRepo = 'incubator-kie-kogito-runtimes'
+//kogitoAppsRepo = 'incubator-kie-kogito-apps'
 
 pipeline {
-    agent {
-        docker { 
-            image env.AGENT_DOCKER_BUILDER_IMAGE
-            args env.AGENT_DOCKER_BUILDER_ARGS
-            label util.avoidFaultyNodes()
-        }
-    }
+    agent any
 
     options {
         timestamps()
         timeout(time: 60, unit: 'MINUTES')
-    }
-
-    environment {
-        KOGITO_CI_EMAIL_TO = credentials("${JENKINS_EMAIL_CREDS_ID}")
     }
 
     stages {
@@ -34,151 +24,154 @@ pipeline {
                     cleanWs(disableDeferredWipeout: true)
 
                     checkout scm
-                    examplesHelper = load '.ci/jenkins/helper_scripts/examples.groovy'
 
-                    if (params.DISPLAY_NAME) {
-                        currentBuild.displayName = params.DISPLAY_NAME
-                    }
-
-                    checkoutRepo(droolsRepo, getBuildBranch())
-                    checkoutRepo(kogitoRuntimesRepo, getBuildBranch())
-                    checkoutRepo(kogitoAppsRepo, getBuildBranch())
-                    checkoutRepo(getRepoName(), getBuildBranch())
+//                    examplesHelper = load '.ci/jenkins/helper_scripts/examples.groovy'
+//
+//                    if (params.DISPLAY_NAME) {
+//                        currentBuild.displayName = params.DISPLAY_NAME
+//                    }
+//
+//                    checkoutRepo(droolsRepo, getBuildBranch())
+//                    checkoutRepo(kogitoRuntimesRepo, getBuildBranch())
+//                    checkoutRepo(kogitoAppsRepo, getBuildBranch())
+//                    checkoutRepo(getRepoName(), getBuildBranch())
                 }
             }
         }
-        stage('Build Drools') {
-            steps {
-                script {
-                    configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
-                        getMavenCommand(droolsRepo)
-                            .withOptions(env.BUILD_MVN_OPTS_UPSTREAM ? [ env.BUILD_MVN_OPTS_UPSTREAM ] : [])
-                            .withOptions(env.DROOLS_BUILD_MVN_OPTS_UPSTREAM ? [ env.DROOLS_BUILD_MVN_OPTS_UPSTREAM ] : [])
-                            .withProperty('quickly')
-                            .withSettingsXmlFile(MAVEN_SETTINGS_FILE)
-                            .run('clean install')
-                    }
-                }
-            }
-        }
-        stage('Build Kogito Runtimes') {
-            steps {
-                script {
-                    configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
-                        getMavenCommand(kogitoRuntimesRepo)
-                            .withOptions(env.BUILD_MVN_OPTS_UPSTREAM ? [ env.BUILD_MVN_OPTS_UPSTREAM ] : [])
-                            .withOptions(env.KOGITO_RUNTIMES_BUILD_MVN_OPTS_UPSTREAM ? [ env.KOGITO_RUNTIMES_BUILD_MVN_OPTS_UPSTREAM ] : [])
-                            .withProperty('quickly')
-                            .withSettingsXmlFile(MAVEN_SETTINGS_FILE)
-                            .run('clean install')
-                    }
-                }
-            }
-        }
-        stage('Build Kogito Apps') {
-            steps {
-                script {
-                    configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
-                        getMavenCommand(kogitoAppsRepo)
-                            .withOptions(env.BUILD_MVN_OPTS_UPSTREAM ? [ env.BUILD_MVN_OPTS_UPSTREAM ] : [])
-                            .withOptions(env.KOGITO_APPS_BUILD_MVN_OPTS_UPSTREAM ? [ env.KOGITO_APPS_BUILD_MVN_OPTS_UPSTREAM ] : [])
-                            .withProperty('quickly')
-                            .withSettingsXmlFile(MAVEN_SETTINGS_FILE)
-                            .run('clean install')
-                    }
-                }
-            }
-        }
+//        stage('Build Drools') {
+//            steps {
+//                script {
+//                    configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
+//                        getMavenCommand(droolsRepo)
+//                            .withOptions(env.BUILD_MVN_OPTS_UPSTREAM ? [ env.BUILD_MVN_OPTS_UPSTREAM ] : [])
+//                            .withOptions(env.DROOLS_BUILD_MVN_OPTS_UPSTREAM ? [ env.DROOLS_BUILD_MVN_OPTS_UPSTREAM ] : [])
+//                            .withProperty('quickly')
+//                            .withSettingsXmlFile(MAVEN_SETTINGS_FILE)
+//                            .run('clean install')
+//                    }
+//                }
+//            }
+//        }
+//        stage('Build Kogito Runtimes') {
+//            steps {
+//                script {
+//                    configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
+//                        getMavenCommand(kogitoRuntimesRepo)
+//                            .withOptions(env.BUILD_MVN_OPTS_UPSTREAM ? [ env.BUILD_MVN_OPTS_UPSTREAM ] : [])
+//                            .withOptions(env.KOGITO_RUNTIMES_BUILD_MVN_OPTS_UPSTREAM ? [ env.KOGITO_RUNTIMES_BUILD_MVN_OPTS_UPSTREAM ] : [])
+//                            .withProperty('quickly')
+//                            .withSettingsXmlFile(MAVEN_SETTINGS_FILE)
+//                            .run('clean install')
+//                    }
+//                }
+//            }
+//        }
+//        stage('Build Kogito Apps') {
+//            steps {
+//                script {
+//                    configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
+//                        getMavenCommand(kogitoAppsRepo)
+//                            .withOptions(env.BUILD_MVN_OPTS_UPSTREAM ? [ env.BUILD_MVN_OPTS_UPSTREAM ] : [])
+//                            .withOptions(env.KOGITO_APPS_BUILD_MVN_OPTS_UPSTREAM ? [ env.KOGITO_APPS_BUILD_MVN_OPTS_UPSTREAM ] : [])
+//                            .withProperty('quickly')
+//                            .withSettingsXmlFile(MAVEN_SETTINGS_FILE)
+//                            .run('clean install')
+//                    }
+//                }
+//            }
+//        }
         stage('Update project version') {
             steps {
                 script {
                     dir(getRepoName()) {
                         def oldKogitoVersion = readMavenPom(file: 'pom.xml').version
                         echo "Got old Kogito version ${oldKogitoVersion}"
-                        configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
-                            maven.mvnVersionsUpdateParentAndChildModules(
-                                getMavenCommand().withSettingsXmlFile(MAVEN_SETTINGS_FILE),
-                                getKogitoVersion(),
-                                true
-                            )
-                            maven.mvnSetVersionProperty(
-                                getMavenCommand().withSettingsXmlFile(MAVEN_SETTINGS_FILE),
-                                'version.org.kie.kogito',
-                                getKogitoVersion()
-                            )
-                            maven.mvnSetVersionProperty(
-                                getMavenCommand().withSettingsXmlFile(MAVEN_SETTINGS_FILE),
-                                'kogito.bom.version',
-                                getKogitoVersion()
-                            )
-                            maven.mvnSetVersionProperty(
-                                getMavenCommand().withSettingsXmlFile(MAVEN_SETTINGS_FILE),
-                                'version.org.drools',
-                                getDroolsVersion()
-                            )
-                        }
+//                        configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
+//                            maven.mvnVersionsUpdateParentAndChildModules(
+//                                getMavenCommand().withSettingsXmlFile(MAVEN_SETTINGS_FILE),
+//                                getKogitoVersion(),
+//                                true
+//                            )
+//                            maven.mvnSetVersionProperty(
+//                                getMavenCommand().withSettingsXmlFile(MAVEN_SETTINGS_FILE),
+//                                'version.org.kie.kogito',
+//                                getKogitoVersion()
+//                            )
+//                            maven.mvnSetVersionProperty(
+//                                getMavenCommand().withSettingsXmlFile(MAVEN_SETTINGS_FILE),
+//                                'kogito.bom.version',
+//                                getKogitoVersion()
+//                            )
+//                            maven.mvnSetVersionProperty(
+//                                getMavenCommand().withSettingsXmlFile(MAVEN_SETTINGS_FILE),
+//                                'version.org.drools',
+//                                getDroolsVersion()
+//                            )
+//                        }
 
-                        if (getKogitoVersion() != oldKogitoVersion) {
-                            def status = sh(script: "grep -ir '${oldKogitoVersion}' --include='pom.xml'", returnStatus: true)
-                            if (status == 0) {
-                                error "Old Kogito version ${oldKogitoVersion} is still present into the project... Please review it..."
-                            }
-                        }
+//                        if (getKogitoVersion() != oldKogitoVersion) {
+//                            def status = sh(script: "grep -ir '${oldKogitoVersion}' --include='pom.xml'", returnStatus: true)
+//                            if (status == 0) {
+//                                error "Old Kogito version ${oldKogitoVersion} is still present into the project... Please review it..."
+//                            } else {
+//                                echo "No old Kogito version ${oldKogitoVersion} found"
+//                            }
+//                        }
                     }
                 }
             }
         }
-        stage('Update images\' version') {
-            when {
-                expression { !isMainBranch() }
-            }
-            steps {
-                script {
-                    String[] versionSplit = getKogitoVersion().split("\\.")
-                    String reducedTag = "${versionSplit[0]}.${versionSplit[1]}"
-                    sh """
-                        grep -r -l --exclude-dir=.ci 'quay.io/kiegroup' | xargs -I{} sed -i 's|quay.io/kiegroup/\\(.*\\):.*|quay.io/kiegroup/\\1:${reducedTag}|g' {}
-                    """
-                }
-            }
-        }
-        stage('Update branch') {
-            steps {
-                script {
-                    dir(getRepoName()) {
-                        if (githubscm.isThereAnyChanges()) {
-                            def commitMsg = "Update version to Kogito ${getKogitoVersion()} / Drools ${getDroolsVersion()}"
-
-                            githubscm.setUserConfigFromCreds(getGitAuthorPushCredsId())
-                            githubscm.commitChanges(commitMsg)
-                            githubscm.pushObject('origin', getBuildBranch(), getGitAuthorPushCredsId())
-                        } else {
-                            println '[WARN] no changes to commit'
-                        }
-                    }
-                }
-            }
-        }
+//        stage('Update images\' version') {
+//            when {
+//                expression { !isMainBranch() }
+//            }
+//            steps {
+//                script {
+//                    String[] versionSplit = getKogitoVersion().split("\\.")
+//                    String reducedTag = "${versionSplit[0]}.${versionSplit[1]}"
+//                    sh """
+//                        grep -r -l --exclude-dir=.ci 'quay.io/kiegroup' | xargs -I{} sed -i 's|quay.io/kiegroup/\\(.*\\):.*|quay.io/kiegroup/\\1:${reducedTag}|g' {}
+//                    """
+//                }
+//            }
+//        }
+//        stage('Update branch') {
+//            steps {
+//                script {
+//                    dir(getRepoName()) {
+//                        if (githubscm.isThereAnyChanges()) {
+//                            def commitMsg = "Update version to Kogito ${getKogitoVersion()} / Drools ${getDroolsVersion()}"
+//
+//                            githubscm.setUserConfigFromCreds(getGitAuthorPushCredsId())
+//                            githubscm.commitChanges(commitMsg)
+//                            githubscm.pushObject('origin', getBuildBranch(), getGitAuthorPushCredsId())
+//                        } else {
+//                            println '[WARN] no changes to commit'
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
-    post {
-        unsuccessful {
-            sendNotification()
-        }
-        cleanup {
-            script {
-                util.cleanNode()
-            }
-        }
-    }
+//    post {
+//        unsuccessful {
+//            sendNotification()
+//        }
+//        cleanup {
+//            script {
+//                util.cleanNode()
+//            }
+//        }
+//    }
 }
 
-void sendNotification() {
-    if (params.SEND_NOTIFICATION) {
-        mailer.sendMarkdownTestSummaryNotification('Setup branch', "[${getBuildBranch()}] Kogito Examples", [env.KOGITO_CI_EMAIL_TO])
-    } else {
-        echo 'No notification sent per configuration'
-    }
-}
+//void sendNotification() {
+//    if (params.SEND_NOTIFICATION) {
+//        mailer.sendMarkdownTestSummaryNotification('Setup branch', "[${getBuildBranch()}] Kogito Examples", [env.KOGITO_CI_EMAIL_TO])
+//    } else {
+//        echo 'No notification sent per configuration'
+//    }
+//}
 
 void checkoutRepo(String repository, String branch) {
     dir(repository) {
