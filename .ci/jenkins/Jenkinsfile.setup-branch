@@ -10,15 +10,15 @@ examplesHelper = null
 //kogitoAppsRepo = 'incubator-kie-kogito-apps'
 
 pipeline {
-//    agent {
-//        docker {
-//            image env.AGENT_DOCKER_BUILDER_IMAGE
-//            args env.AGENT_DOCKER_BUILDER_ARGS
+    agent {
+        docker {
+            image env.AGENT_DOCKER_BUILDER_IMAGE
+            args env.AGENT_DOCKER_BUILDER_ARGS
 //            label util.avoidFaultyNodes()
-//        }
-//    }
+        }
+    }
 
-    agent any
+//    agent any
 
     options {
         timestamps()
