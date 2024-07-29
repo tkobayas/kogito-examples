@@ -1,5 +1,5 @@
 import org.jenkinsci.plugins.workflow.libs.Library
-//@Library('jenkins-pipeline-shared-libraries')_
+@Library('jenkins-pipeline-shared-libraries')_
 
 import org.kie.jenkins.MavenCommand
 
