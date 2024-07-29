@@ -10,13 +10,16 @@ examplesHelper = null
 //kogitoAppsRepo = 'incubator-kie-kogito-apps'
 
 pipeline {
-    agent {
-        docker {
-            image env.AGENT_DOCKER_BUILDER_IMAGE
-            args env.AGENT_DOCKER_BUILDER_ARGS
-            label util.avoidFaultyNodes()
-        }
-    }
+//    agent {
+//        docker {
+//            image env.AGENT_DOCKER_BUILDER_IMAGE
+//            args env.AGENT_DOCKER_BUILDER_ARGS
+//            label util.avoidFaultyNodes()
+//        }
+//    }
+
+    agent any
+
     options {
         timestamps()
         timeout(time: 60, unit: 'MINUTES')
