@@ -101,8 +101,11 @@ pipeline {
                             echo "POM Version: ${pom.version}"
 
                             if (pom.version == null) {
-                                def parentPom = readMavenPom(file: "${pom.parent.relativePath ?: '../pom.xml'}")
-                                echo "Parent POM Version: ${parentPom.version}"
+
+                                echo "parent POM version: ${pom.parent.version}"
+
+                                //def parentPom = readMavenPom(file: "${pom.parent.relativePath ?: '../pom.xml'}")
+                                //echo "Parent POM Version: ${parentPom.version}"
                             }
                         } catch (Exception e) {
                             echo "Exception occurred: ${e}"
