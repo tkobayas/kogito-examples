@@ -93,27 +93,13 @@ pipeline {
                 script {
                     dir(getRepoName()) {
 
-                        try {
-                            def pom = readMavenPom(file: 'pom.xml')
-                            echo "POM Details: ${pom.dump()}"
-
-                            echo "POM Object: ${pom}"
-                            echo "POM Version: ${pom.version}"
-
-                            if (pom.version == null) {
-
-                                echo "parent POM version: ${pom.parent.version}"
-
-                                //def parentPom = readMavenPom(file: "${pom.parent.relativePath ?: '../pom.xml'}")
-                                //echo "Parent POM Version: ${parentPom.version}"
-                            }
-                        } catch (Exception e) {
-                            echo "Exception occurred: ${e}"
-                            e.printStackTrace()
+                        def pom = readMavenPom(file: 'pom.xml');
+                        def oldKogitoVersion = pom.version
+                        if (oldKogitoVersion == null) {
+                            echo "pom version is null. Using parent pom version"
+                            oldKogitoVersion = pom.parent.version
                         }
 
-
-                        def oldKogitoVersion = readMavenPom(file: 'pom.xml').version
                         echo "Got old Kogito version ${oldKogitoVersion}"
 //                        configFileProvider([configFile(fileId: env.MAVEN_SETTINGS_CONFIG_FILE_ID, variable: 'MAVEN_SETTINGS_FILE')]){
 //                            maven.mvnVersionsUpdateParentAndChildModules(
