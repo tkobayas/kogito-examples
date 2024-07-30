@@ -29,6 +29,12 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
+
+                    def unameOutput = sh(script: 'uname -a', returnStdout: true).trim()
+                    echo "uname output1: ${unameOutput}"
+                    sh "pwd"
+                    sh "id"
+
                     cleanWs(disableDeferredWipeout: true)
 
 //                    checkout scm
@@ -94,7 +100,9 @@ pipeline {
                     dir(getRepoName()) {
 
                         def unameOutput = sh(script: 'uname -a', returnStdout: true).trim()
-                        echo "uname output: ${unameOutput}"
+                        echo "uname output3: ${unameOutput}"
+                        sh "pwd"
+                        sh "id"
 
                         def pom = readMavenPom(file: 'pom.xml');
                         def oldKogitoVersion = pom.version
@@ -192,6 +200,11 @@ pipeline {
 //}
 
 void checkoutRepo(String repository, String branch) {
+    def unameOutput = sh(script: 'uname -a', returnStdout: true).trim()
+    echo "uname output2: ${unameOutput}"
+    sh "pwd"
+    sh "id"
+
     dir(repository) {
         deleteDir()
         checkout(githubscm.resolveRepository(repository, getGitAuthor(), branch, false, getGitAuthorCredsId()))
