@@ -13,7 +13,7 @@ pipeline {
     agent {
         docker {
             image env.AGENT_DOCKER_BUILDER_IMAGE
-            args env.AGENT_DOCKER_BUILDER_ARGS
+            args "${env.AGENT_DOCKER_BUILDER_ARGS} -u 910:910"
             //label util.avoidFaultyNodes()
         }
     }
