@@ -93,6 +93,9 @@ pipeline {
                 script {
                     dir(getRepoName()) {
 
+                        def unameOutput = sh(script: 'uname -a', returnStdout: true).trim()
+                        echo "uname output: ${unameOutput}"
+
                         def pom = readMavenPom(file: 'pom.xml');
                         def oldKogitoVersion = pom.version
                         if (oldKogitoVersion == null) {
