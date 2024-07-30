@@ -103,6 +103,7 @@ pipeline {
                         echo "uname output3: ${unameOutput}"
                         sh "pwd"
                         sh "id"
+                        sh "ls -l ~/usr/local/m3/bin/mvn"
 
                         def pom = readMavenPom(file: 'pom.xml');
                         def oldKogitoVersion = pom.version
