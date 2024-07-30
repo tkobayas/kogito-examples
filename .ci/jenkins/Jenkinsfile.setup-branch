@@ -10,15 +10,15 @@ examplesHelper = null
 //kogitoAppsRepo = 'incubator-kie-kogito-apps'
 
 pipeline {
-//    agent {
-//        docker {
-//            image env.AGENT_DOCKER_BUILDER_IMAGE
-//            args "${env.AGENT_DOCKER_BUILDER_ARGS} -u 910:910"
-//            //label util.avoidFaultyNodes()
-//        }
-//    }
+    agent {
+        docker {
+            image env.AGENT_DOCKER_BUILDER_IMAGE
+            args "${env.AGENT_DOCKER_BUILDER_ARGS}"
+            //label util.avoidFaultyNodes()
+        }
+    }
 
-    agent any
+//    agent any
 
     options {
         timestamps()
@@ -103,7 +103,7 @@ pipeline {
                         echo "uname output3: ${unameOutput}"
                         sh "pwd"
                         sh "id"
-                        sh "ls -l ~/usr/local/m3/bin/mvn"
+//                        sh "ls -l ~/usr/local/m3/bin/mvn"
 
                         def pom = readMavenPom(file: 'pom.xml');
                         def oldKogitoVersion = pom.version
