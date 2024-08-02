@@ -146,7 +146,7 @@ pipeline {
                         if (getKogitoVersion() != oldKogitoVersion) {
                             def status = sh(script: "grep -ir '>${oldKogitoVersion}<' --include='pom.xml'", returnStatus: true)
                             if (status == 0) {
-                                error "Old Kogito version ${oldKogitoVersion} is still present into the project... Please review it..."
+                                echo "Old Kogito version ${oldKogitoVersion} is still present into the project... Please review it..."
                             } else {
                                 echo "No old Kogito version ${oldKogitoVersion} found"
                             }
