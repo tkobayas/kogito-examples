@@ -106,7 +106,7 @@ pipeline {
 //                        sh "ls -l ~/usr/local/m3/bin/mvn"
 
                         def pom = readMavenPom(file: 'pom.xml');
-                        echo "POM Details: ${pom.dump()}"
+                        //echo "POM Details: ${pom.dump()}" // requires in-process script approval
                         def oldKogitoVersion = pom.version
                         if (oldKogitoVersion == null) {
                             echo "pom version is null. Using parent pom version"
